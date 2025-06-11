@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="TutorialGodoto"
-run/main_scene="uid://d1okk1lsp1pb"
+run/main_scene="uid://jge4c1v56s3y"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+World="*res://experiments/ECS/scripts/world.gd"
 
 [display]
 
