@@ -11,6 +11,17 @@ var component_entity_rel = {}
 # Entity: components that this entity has
 var entity_component_rel = {}
 
+# Systems
+var input_system
+var movement_system  
+var render_system
+
+func _ready():
+	# Initialize systems
+	input_system = InputSystem.new()
+	movement_system = MovementSystem.new()
+	render_system = RenderSystem.new()
+
 func reset():
 	next_id = 1;
 	component_entity_rel = {}
@@ -40,16 +51,14 @@ func add_component(entity_id: int, component: BaseComponent) -> Error:
 	entity_component_rel[entity_id].get_or_add(component_name, {})
 	entity_component_rel[entity_id][component_name] = component
 	
-	print(component_entity_rel)
-	return 0
+	return OK
 
 # Will return only the entities that have all the matching components
 func get_entities_with_components(components_list: Array) -> Array:
-	print("Array list", components_list)
 	var entities_found = {} # Entity ID: times found
 	if(components_list.size() == 0):
 		printerr("Component list is empty")
-		return entities_found
+		return []
 	
 	# Populate the list with the entities of the first component
 	for component in components_list:
@@ -65,15 +74,19 @@ func get_entities_with_components(components_list: Array) -> Array:
 			entities_that_match.append(entities_keys[i])
 	
 	return entities_that_match
-	pass
 
 func get_component_from_entity(entity_id: int, component_name: String) -> BaseComponent:
-	return component_entity_rel.get(component_name).get(entity_id)
+	return component_entity_rel.get(component_name, {}).get(entity_id)
 
 # INTERNAL FUNCTIONS
 func __get_entities_with_component_name__(component_name: String) -> Dictionary:
 	return component_entity_rel.get(component_name, {})
 
 func _physics_process(delta: float) -> void:
-	InputSystem.update
-	pass
+	#if not in_game:
+	#	return
+	print("In game")
+	# Update all systems in the correct order
+	input_system._update(self, delta)
+	movement_system._update(self, delta)
+	render_system._update(self, delta)

@@ -9,13 +9,20 @@ func _update(world: World, delta: float):
 	
 	var dir_x = 0
 	var dir_y = 0
+	
+	# Handle horizontal input
 	if(Input.is_action_pressed("mover_direita")):
-		dir_x = 1;
+		dir_x = 1
 	elif(Input.is_action_pressed("mover_esquerda")):
-		dir_x = -1;
+		dir_x = -1
+	
+	# Handle vertical input (add these actions to your input map if they don't exist)
+	if(Input.is_action_pressed("mover_cima")):
+		dir_y = -1
+	elif(Input.is_action_pressed("mover_baixo")):
+		dir_y = 1
 	
 	for entity in entities:
-		var component : InputComponent = world.get_component_from_entity(entity, InputComponent.NAME);
+		var component : InputComponent = world.get_component_from_entity(entity, InputComponent.NAME)
 		component.input_X = dir_x
-		
-	pass
+		component.input_y = dir_y
