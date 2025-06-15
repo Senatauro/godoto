@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwpxwvm46nlp0"]
+
+[ext_resource type="Script" uid="uid://0cigsybwx4x3" path="res://experiments/multiplayer/scripts/uiManager.gd" id="1_ees85"]
+[ext_resource type="PackedScene" uid="uid://bohrlehobujtw" path="res://experiments/multiplayer/scenes/lobby.tscn" id="2_pj6qh"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ees85")
+new_scene = ExtResource("2_pj6qh")
+
+[node name="initialMenu" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 54.0
+offset_right = 188.0
+offset_bottom = 94.0
+
+[node name="hostBtn" type="Button" parent="initialMenu"]
+layout_mode = 2
+text = "Host"
+
+[node name="join" type="HBoxContainer" parent="initialMenu"]
+layout_mode = 2
+alignment = 1
+metadata/_edit_group_ = true
+
+[node name="joinBtn" type="Button" parent="initialMenu/join"]
+custom_minimum_size = Vector2(58.225, 0)
+layout_mode = 2
+text = "Join"
+
+[node name="ipEditField" type="LineEdit" parent="initialMenu/join"]
+custom_minimum_size = Vector2(148.035, 0)
+layout_mode = 2
+placeholder_text = "255.255.255.255"
+alignment = 2
+
+[connection signal="pressed" from="initialMenu/hostBtn" to="." method="_on_host_btn_pressed"]
+[connection signal="pressed" from="initialMenu/join/joinBtn" to="." method="_on_join_btn_pressed"]
+[connection signal="text_changed" from="initialMenu/join/ipEditField" to="." method="_on_ip_edit_field_text_changed"]

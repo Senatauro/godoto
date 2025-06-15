@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c132ojpqlty0s"]
+
+[ext_resource type="PackedScene" uid="uid://c60ra8foysqeu" path="res://2D/experiments/Command/player.tscn" id="1_ovnfn"]
+[ext_resource type="Script" uid="uid://rirtjeaml1kj" path="res://2D/experiments/Command/scripts/commandExecutor.gd" id="2_y2gmx"]
+
+[node name="TestScene" type="Node"]
+
+[node name="player" parent="." instance=ExtResource("1_ovnfn")]
+
+[node name="GameManagers" type="Node" parent="."]
+
+[node name="CommandExecutor" type="Node" parent="GameManagers"]
+script = ExtResource("2_y2gmx")

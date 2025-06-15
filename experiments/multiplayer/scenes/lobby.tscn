@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bohrlehobujtw"]
+
+[ext_resource type="Script" uid="uid://dv35mjtjlqkew" path="res://experiments/multiplayer/scripts/multiplayerLobby.gd" id="1_adtux"]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_adtux")

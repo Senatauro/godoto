@@ -13,16 +13,15 @@ config_version=5
 config/name="TutorialGodoto"
 run/main_scene="uid://jge4c1v56s3y"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://2D/icon.svg"
 
 [autoload]
 
-World="*res://experiments/ECS/scripts/world.gd"
+MultiplayerManager="*res://experiments/multiplayer/scripts/MultiplayerManager.gd"
+CommandExecutor="*res://3D/experiments/command/scripts/command/commandExecutor.gd"
 
 [display]
 
-window/size/viewport_width=480
-window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
 [input]
@@ -51,3 +50,12 @@ mover_baixo={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194322,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
+
+[layer_names]
+
+3d_render/layer_1="world"
+3d_render/layer_2="player"
+3d_render/layer_3="enemies"
+3d_physics/layer_1="world"
+3d_physics/layer_2="player"
+3d_physics/layer_3="enemies"

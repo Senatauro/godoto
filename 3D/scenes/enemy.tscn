@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpea4k0ydjfun"]
+
+[ext_resource type="Script" uid="uid://di0l3c3ik3anp" path="res://3D/experiments/command/scripts/enemy.gd" id="1_qf74j"]
+[ext_resource type="Script" uid="uid://ds48l34m8y6ij" path="res://experiments/state machine/scripts/enemy/enemyIdle.gd" id="2_d7smg"]
+[ext_resource type="Script" uid="uid://b6o0it0wx541k" path="res://experiments/state machine/scripts/stateMachine.gd" id="2_gu365"]
+[ext_resource type="Script" uid="uid://dsn16ufmu0rw7" path="res://experiments/state machine/scripts/enemy/enemyFollow.gd" id="4_6gc4b"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_u3wpn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qf74j"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gu365"]
+radius = 5.0
+
+[node name="Enemy" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_qf74j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_u3wpn")
+
+[node name="enemyShape" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_qf74j")
+
+[node name="detectionRange" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="detectionRange"]
+shape = SubResource("SphereShape3D_gu365")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_gu365")
+initial_state = NodePath("idle")
+
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("2_d7smg")
+enemy = NodePath("../..")
+metadata/_custom_type_script = "uid://ds48l34m8y6ij"
+
+[node name="follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("4_6gc4b")
+enemy = NodePath("../..")
+move_speed = 1.0
+metadata/_custom_type_script = "uid://dsn16ufmu0rw7"
+
+[connection signal="body_entered" from="detectionRange" to="." method="_on_detection_range_body_entered"]
+[connection signal="body_exited" from="detectionRange" to="." method="_on_detection_range_body_exited"]

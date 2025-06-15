@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://gruf2r7xgboo"]
+
+[ext_resource type="PackedScene" uid="uid://1jib5rd07ybj" path="res://3D/scenes/terreno.tscn" id="1_l31m6"]
+[ext_resource type="PackedScene" uid="uid://ciyxtlctedvxa" path="res://3D/scenes/player.tscn" id="2_qd1bw"]
+[ext_resource type="PackedScene" uid="uid://bpea4k0ydjfun" path="res://3D/scenes/enemy.tscn" id="3_qd1bw"]
+
+[node name="Game" type="Node3D"]
+transform = Transform3D(0.997484, 0, 0, 0, 0.997484, 0, 0, 0, 0.997484, 0, 0, 0)
+
+[node name="Terrain" parent="." instance=ExtResource("1_l31m6")]
+collision_mask = 6
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 6.06772, 9.0743)
+
+[node name="Player" parent="." instance=ExtResource("2_qd1bw")]
+transform = Transform3D(1.10235, 0, 0, 0, 1.10235, 0, 0, 0, 1.10235, 0.00744882, 1, -0.114358)
+
+[node name="Enemy" parent="." instance=ExtResource("3_qd1bw")]
+transform = Transform3D(0.998955, 0, 0, 0, 0.998955, 0, 0, 0, 0.998955, 4.26688, 0.5, -0.0476723)
