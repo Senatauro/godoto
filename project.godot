@@ -17,8 +17,8 @@ config/icon="res://2D/icon.svg"
 
 [autoload]
 
-MultiplayerManager="*res://experiments/multiplayer/scripts/MultiplayerManager.gd"
 CommandExecutor="*res://3D/experiments/command/scripts/command/commandExecutor.gd"
+MultiplayerManager="*res://experiments/multiplayer/scripts/multiplayerManager.gd"
 
 [display]
 

@@ -1,53 +1,86 @@
 extends Node
 
-const PORT = 12345
-var multiplayer_peer: ENetMultiplayerPeer
-var id: int;
+signal server_hosted();
 
+signal server_on_peer_connected(id: int);
+signal client_on_peer_connected(id: int);
+signal server_on_peer_disconnected(id: int);
+signal client_on_peer_disconnected(id: int);
+signal on_connected_to_server();
+signal on_connection_failed();
+signal on_server_disconnected();
 
+const TCP_PORT = 4560
+const UDP_PORT = 4561
 
-# Host a server
-func host():
-	# Create a new peer that will handle the current multiplayer session
-	multiplayer_peer = ENetMultiplayerPeer.new();
-
-	# Create the server
-	multiplayer_peer.create_server(12345, 4);
-	
-	multiplayer_peer.peer_connected.connect(on_peer_connected)
-	multiplayer_peer.peer_disconnected.connect(on_peer_disconnected)
-	# Set the multiplayer peer that we just created to the peer on the multiplayer object for the game
-	multiplayer.multiplayer_peer = multiplayer_peer;
-
-	id = multiplayer_peer.get_unique_id()
-
-func join(ip: String):
-	multiplayer_peer = ENetMultiplayerPeer.new()
-
-	# Connect the peer to the server
-	var response = multiplayer_peer.create_client(ip, PORT);
-	print("Response", response)
-
-	if response != OK:
-		printerr("Error when trying to connect");
-		return
-
-	multiplayer.multiplayer_peer = multiplayer_peer;
-	id = multiplayer_peer.get_unique_id()
-
-func finish():
-	multiplayer_peer = null
-	multiplayer.multiplayer_peer = null
-
-func on_peer_connected(peerId: int):
-	if(multiplayer.is_server()):
-		print("Server: Peer ID: ", peerId)
-	else:
-		print("Client: Peer ID: ", peerId)
+# Main Network functions
+func create_server():
+	var peer = ENetMultiplayerPeer.new();
+	peer.peer_connected.connect(peer_connected);
+	peer.peer_disconnected.connect(peer_disconnected);
+	var server_creation_response = peer.create_server(UDP_PORT, 10);
+	multiplayer.multiplayer_peer = peer;
+	server_hosted.emit()
 	pass
 
-func on_peer_disconnected(peerId: int):
-	if(multiplayer.is_server()):
-		print("Server: Peer disconnected ID: ", peerId)
-	else:
-		print("Client: Peer disconnected ID: ", peerId)
+func create_client(server_ip: String):
+	var peer = ENetMultiplayerPeer.new();
+	peer.peer_connected.connect(peer_connected);
+	peer.peer_disconnected.connect(peer_disconnected);
+	peer.create_client(server_ip, UDP_PORT);
+	multiplayer.multiplayer_peer = peer;
+	multiplayer.connected_to_server.connect(connected_to_server);
+	multiplayer.connection_failed.connect(connection_failed);
+	multiplayer.server_disconnected.connect(server_disconnected);
+	pass
+
+# Clear the connections on the signals and remove the multiplayer peer
+func finish_networking():
+	for con in multiplayer.multiplayer_peer.peer_connected.get_connections():
+		multiplayer.multiplayer_peer.peer_connected.disconnect(con.callable);
+	for con in multiplayer.multiplayer_peer.peer_disconnected.get_connections():
+		multiplayer.multiplayer_peer.peer_disconnected.disconnect(con.callable);
+	for con in server_on_peer_connected.get_connections():
+		server_on_peer_connected.disconnect(con.callable);
+	for con in client_on_peer_connected.get_connections():
+		client_on_peer_connected.disconnect(con.callable);
+	for con in server_on_peer_disconnected.get_connections():
+		server_on_peer_disconnected.disconnect(con.callable);
+	for con in client_on_peer_disconnected.get_connections():
+		client_on_peer_disconnected.disconnect(con.callable);
+	for con in on_connected_to_server.get_connections():
+		on_connected_to_server.disconnect(con.callable);
+	for con in on_connection_failed.get_connections():
+		on_connection_failed.disconnect(con.callable);
+	for con in on_server_disconnected.get_connections():
+		on_server_disconnected.disconnect(con.callable);
+	multiplayer.multiplayer_peer = null
+
+# Peer handling functions
+## Everyone
+func peer_connected(peer_id: int):
+	print("Peer connected. Peer ID:", peer_id);
+	server_on_peer_connected.emit(peer_id);
+	client_on_peer_connected.emit(peer_id);
+
+func peer_disconnected(peer_id: int):
+	print("Peer disconnected. Peer ID:", peer_id)
+	server_on_peer_disconnected.emit(peer_id);
+	client_on_peer_disconnected.emit(peer_id);
+
+## Client only
+func connected_to_server():
+	print("Connected!!!")
+	on_connected_to_server.emit()
+	pass
+
+func connection_failed():
+	print("Failed to connect :/")
+	on_connection_failed.emit();
+	finish_networking()
+	pass
+
+func server_disconnected():
+	print("Server went down, possibly");
+	on_server_disconnected.emit();
+	pass

@@ -1,8 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://bohrlehobujtw"]
+[gd_scene load_steps=2 format=3 uid="uid://etlvojivpyfa"]
 
-[ext_resource type="Script" uid="uid://dv35mjtjlqkew" path="res://experiments/multiplayer/scripts/multiplayerLobby.gd" id="1_adtux"]
+[ext_resource type="Script" uid="uid://blbf4kct2tf64" path="res://experiments/multiplayer/scenes/lobbyManager.gd" id="1_adtux"]
 
-[node name="VBoxContainer" type="VBoxContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_adtux")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 56.0
+offset_right = 476.0
+offset_bottom = 280.0
+
+[node name="userList" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
