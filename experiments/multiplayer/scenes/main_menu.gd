@@ -38,3 +38,7 @@ func on_client_connected():
 	print("Client connected");
 	get_tree().change_scene_to_packed(lobby_scene);
 	pass
+
+func _on_username_input_text_changed(new_text:String) -> void:
+	
+	pass # Replace with function body.

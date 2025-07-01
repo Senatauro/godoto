@@ -19,6 +19,7 @@ config/icon="res://2D/icon.svg"
 
 CommandExecutor="*res://3D/experiments/command/scripts/command/commandExecutor.gd"
 MultiplayerManager="*res://experiments/multiplayer/scripts/multiplayerManager.gd"
+PlayerDataManager="*res://experiments/multiplayer/scripts/playerDataManager.gd"
 
 [display]
 

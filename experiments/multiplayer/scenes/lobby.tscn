@@ -11,17 +11,61 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_adtux")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="userListPanel" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 56.0
 offset_right = 476.0
 offset_bottom = 280.0
 
-[node name="userList" type="VBoxContainer" parent="Panel"]
+[node name="userList" type="VBoxContainer" parent="userListPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="chatPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 384.0
+offset_right = 475.0
+offset_bottom = 627.0
+
+[node name="VSplitContainer" type="VSplitContainer" parent="chatPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 775
+
+[node name="ScrollContainer" type="ScrollContainer" parent="chatPanel/VSplitContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="messageHistory" type="VBoxContainer" parent="chatPanel/VSplitContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="messageInput" type="LineEdit" parent="chatPanel/VSplitContainer"]
+layout_mode = 2
+placeholder_text = "Type your message here"
+
+[node name="startGame" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -119.0
+offset_top = -52.0
+offset_right = -26.0
+offset_bottom = -21.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Start game"
+
+[connection signal="text_submitted" from="chatPanel/VSplitContainer/messageInput" to="." method="_on_message_input_text_submitted"]

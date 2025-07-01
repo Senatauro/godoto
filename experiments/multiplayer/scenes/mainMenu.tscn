@@ -29,6 +29,13 @@ grow_vertical = 2
 alignment = 1
 vertical = true
 
+[node name="usernameInput" type="LineEdit" parent="BoxContainer"]
+custom_minimum_size = Vector2(135, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Username"
+max_length = 15
+
 [node name="hostBtn" type="Button" parent="BoxContainer"]
 layout_mode = 2
 text = "Host"
@@ -48,6 +55,7 @@ size_flags_horizontal = 3
 placeholder_text = "127.0.0.1"
 max_length = 15
 
+[connection signal="text_changed" from="BoxContainer/usernameInput" to="." method="_on_username_input_text_changed"]
 [connection signal="pressed" from="BoxContainer/hostBtn" to="." method="_on_host_btn_pressed"]
 [connection signal="pressed" from="BoxContainer/joinGroup/joinBtn" to="." method="_on_join_btn_pressed"]
 [connection signal="text_changed" from="BoxContainer/joinGroup/ipInput" to="." method="_on_ip_input_text_changed"]
